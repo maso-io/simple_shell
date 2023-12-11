@@ -7,14 +7,14 @@
  */
 char *get_path()
 {
-	char *tmp, *var;
+	char *tmp;
 
 	while (*environ != NULL)
 	{
 		tmp = strdup(*environ);
 		if (tmp == NULL)
 		{
-			perror("error");
+			printf("error -strdup\n");
 			exit(96);
 		}
 		if (strncmp(tmp, "PATH=", 5) == 0)
@@ -68,45 +68,60 @@ char *get_fullpath(char *p, char *file_name, int len)
  * file/information, through struct stat structure.
  * Return: 0 on success, otherwise 1
  */
-int get_stat(char *f_name, char *f_path)
+int get_stat(char *f_name, char *f_path, int last_path)
 {
-	struct stat *file_info;
+	struct stat file_info;
 
-	if (stat(f_path, file_info) == 0)
+	(void) f_name;
+	(void) last_path;
+	if (stat(f_path, &file_info) == 0)
 	{
-		printf(" FOUND:\t%s\n", f_name);
-		printf("in path: %s\n", f_path);
+		/*printf(" FOUND:\t%s\n", f_name);*/
+		/*printf("in path: %s\n", f_path);*/
 		/* access file properties */
-		printf("file user ID: %d\n", file_info->st_uid);
+		/*printf("file user ID: %d\n", file_info.st_uid);*/
 	}
 	else
 	{
-		printf("Error- check_file\n");
 		return (1);
 	}
 
+
 	return (0);
 }
-int get_file_stat(char *f)
+int get_file_stat(char **f)
 {
 	char *file, *path;
-	int i, j, p_len;
+	int i, p_len, flag;
 	array_t *token;
 
-	file = f;
+	flag = 1;
+	file = *f;
 	path = get_path();
 	token = (array_t *)malloc(sizeof(array_t));
 	token->arr = arr_tokens(path + 5, ":");
 	token->size = token_size(path + 5, ":");
-	//printf("%s\n", path + 5);
+	/*printf("%s\n", path + 5);*/
 	free(path);
 
 	for (i = 0; i < (token->size); i++)
 	{
 		p_len = strlen((token->arr)[i]) + strlen(file) + 1;
 		(token->arr)[i] = get_fullpath((token->arr)[i], file, p_len);
-		get_stat(file, (token->arr)[i]);
-		printf("%s\n", (token->arr)[i]);
+		if (i == (token->size) - 1)
+			flag = get_stat(file, (token->arr)[i], 1);
+		else
+			flag = get_stat(file, (token->arr)[i], 0);
+		if (flag == 0)
+		{
+			*f = strdup(token->arr[i]);
+			for (; i >= 0; i--)
+				free((token->arr)[i]);
+			free(token->arr);
+			free(token);
+
+			return (0);
+		}
 	}
 	i--;
 	for (; i >= 0; i--)
@@ -116,9 +131,10 @@ int get_file_stat(char *f)
 	free(token->arr);
 	free(token);
 
-	return (0);
+	return (1);
 }
-int main(int ac, char *av[])
+/*
+ * int main(int ac, char *av[])
 {
 	int i;
 
@@ -129,3 +145,4 @@ int main(int ac, char *av[])
 
 	return (0);
 }
+*/

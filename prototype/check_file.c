@@ -16,7 +16,7 @@ int check_file(char *file, char *path, char *d)
 {
 	int i, path_s;
 	char *f_name;
-	struct stat *file_info;
+	struct stat file_info;
 	array_t *token;
 
 	token = (array_t *)malloc(sizeof(array_t));
@@ -38,12 +38,12 @@ int check_file(char *file, char *path, char *d)
 		}
 		strcat(f_name, (token->arr)[i]);
 		strcat(f_name, file);
-		if (stat(f_name, file_info) == 0)
+		if (stat(f_name, &file_info) == 0)
 		{
 			printf(" FOUND:\t%s\n", file);
 			printf("in path: %s\n", f_name);
 			/* access file properties */
-			printf("file user ID: %d\n", file_info->st_uid);
+			printf("file user ID: %d\n", file_info.st_uid);
 		}
 		else
 		{

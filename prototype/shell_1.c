@@ -1,3 +1,4 @@
+#include "main.h"
 #include "shell.h"
 /**
  * _getline - gets input from the user
@@ -28,6 +29,7 @@ void callexe(char **args, char **env, char **buffer);
  */
 int main(int ac, char *argv[], char *env[])
 {
+	int flag;
 	char **args;
 	char *buffer;
 
@@ -46,7 +48,14 @@ int main(int ac, char *argv[], char *env[])
 
 		/* arr = split(&lineptr); */
 		args[0] = buffer;
-		callexe(args, env, &buffer);
+		flag = get_file_stat(&args[0]);
+		if (flag == 0)
+			callexe(args, env, &buffer);
+		else
+		{
+			args[0] = buffer;
+			callexe(args, env, &buffer);
+		}
 		printf("$ ");
 	}
 	putchar(10);
