@@ -29,28 +29,30 @@ void callexe(char **args, char **env, char **buffer);
  */
 int main(int ac, char *argv[], char *env[])
 {
-	int flag, flag_;
+	int flag, flag_, i;
 	char **args;
 	char *buffer;
 
 	(void)ac;
 	(void)argv;
 
-	args = (char **)malloc(sizeof(char *) * 2);
+	/*args = (char **)malloc(sizeof(char *) * 2);*/
 	buffer = (char *)malloc(1);
-	if (!buffer || !args)
+	if (!buffer)
 		return (-1);
-	args[1] = NULL;
 	/* 1. get the line */
 	printf("$ ");
 	while (_getline(&buffer) != EOF)
 	{
 
 		/* arr = split(&lineptr); */
-		args[0] = buffer;
+		/*args[0] = buffer;*/
+		args = arr_tokens(buffer, " ");
 		flag_ = get_cmd_stat(args, env);
 		if (flag_ == 2)
 			flag = get_file_stat(&args[0]);
+		else
+			flag = 1;
 		if (flag == 0 && flag_ == 2)
 		{
 			callexe(args, env, &buffer);
@@ -66,6 +68,11 @@ int main(int ac, char *argv[], char *env[])
 		printf("$ ");
 	}
 	putchar(10);
+	i = (int) token_size(buffer, " ") - 1;
+	for (; i >= 0; i--)
+	{
+		free(args[i]);
+	}
 	free(buffer);
 	free(args);
 	args = NULL;
@@ -128,6 +135,40 @@ void callexe(char **args, char **env, char **buffer)
 		{
 			perror("Error");
 			/*return;*/
+			free(args[0]);
+			free(args);
+			free(buffer);
+			exit(98);
+		}
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+		{
+			if (WEXITSTATUS(status) == 98)
+			{
+				/* Child process terminated ab-ormally */
+				printf("c_process error, status: %d\n", WEXITSTATUS(status));
+				return;
+			}
+			/*exit(98);*/
+		}
+	}
+}
+void call_cmd(char **args, char **env, char **buffer, char **cmd)
+{
+	int status;
+	pid_t pid;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		if (execve(args[0], cmd, env) == -1)
+		{
+			perror("Error");
+			/*return;*/
+			free(args[0]);
 			free(args);
 			free(buffer);
 			exit(98);

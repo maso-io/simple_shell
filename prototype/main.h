@@ -47,4 +47,6 @@ char *get_path();
 void _strdup(char **buffer, const char *s, int len);
 /* checks for the cmd in the current directory */
 int get_cmd_stat(char **cmd, char **envp);
+/* execute execve cmd with extra cmd args */
+void call_cmd(char **args, char **env, char **buffer, char **cmd);
 #endif

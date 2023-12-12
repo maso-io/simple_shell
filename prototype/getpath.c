@@ -115,23 +115,21 @@ int get_file_stat(char **f)
 		if (flag == 1 && i == token->size - 1)
 		{
 			/* cmd is not in PATH */
-			for (; i >= 0; i--)
+			for (i = token->size - 1; i >= 0; i--)
 			{
 				free((token->arr)[i]);
 			}
 			free(token->arr);
 			free(token);
 			return (3);
-
 		}
 		if (flag == 0)
 		{
 			*f = strdup(token->arr[i]);
-			for (; i >= 0; i--)
+			for (i = token->size - 1; i >= 0; i--)
 				free((token->arr)[i]);
 			free(token->arr);
 			free(token);
-
 			return (0);
 		}
 	}
