@@ -29,7 +29,7 @@ void callexe(char **args, char **env, char **buffer);
  */
 int main(int ac, char *argv[], char *env[])
 {
-	int flag;
+	int flag, flag_;
 	char **args;
 	char *buffer;
 
@@ -48,14 +48,21 @@ int main(int ac, char *argv[], char *env[])
 
 		/* arr = split(&lineptr); */
 		args[0] = buffer;
-		flag = get_file_stat(&args[0]);
-		if (flag == 0)
+		flag_ = get_cmd_stat(args, env);
+		if (flag_ == 2)
+			flag = get_file_stat(&args[0]);
+		if (flag == 0 && flag_ == 2)
+		{
 			callexe(args, env, &buffer);
-		else
+		}
+		if (flag_ == 0)
 		{
 			args[0] = buffer;
 			callexe(args, env, &buffer);
 		}
+		if (flag == 3)
+			printf("No such file or directory\n");
+
 		printf("$ ");
 	}
 	putchar(10);

@@ -112,6 +112,18 @@ int get_file_stat(char **f)
 			flag = get_stat(file, (token->arr)[i], 1);
 		else
 			flag = get_stat(file, (token->arr)[i], 0);
+		if (flag == 1 && i == token->size - 1)
+		{
+			/* cmd is not in PATH */
+			for (; i >= 0; i--)
+			{
+				free((token->arr)[i]);
+			}
+			free(token->arr);
+			free(token);
+			return (3);
+
+		}
 		if (flag == 0)
 		{
 			*f = strdup(token->arr[i]);

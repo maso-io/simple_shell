@@ -45,4 +45,6 @@ char *get_fullpath(char *p, char *file_name, int len);
 char *get_path();
 /* duplicates the string supplied by s */
 void _strdup(char **buffer, const char *s, int len);
+/* checks for the cmd in the current directory */
+int get_cmd_stat(char **cmd, char **envp);
 #endif
