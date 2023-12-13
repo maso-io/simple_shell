@@ -39,24 +39,17 @@ int check_file(char *file, char *path, char *d)
 		strcat(f_name, file);
 		if (stat(f_name, &file_info) == 0)
 		{
-			printf(" FOUND:\t%s\n", file);
-			printf("in path: %s\n", f_name);
 			/* access file properties */
 			printf("file user ID: %d\n", file_info.st_uid);
 		}
 		else
 		{
-			printf("Error- check_file\n");
+			perror("stat");
 			return (1);
 		}
 	}
 	free(f_name);
-	for (i = (token->size) - 1; i >= 0; i--)
-	{
-		printf("free: %d\n", i);
-		free((token->arr)[i]);
-	}
-	free(token);
+	free_token(token);
 
 	return (0);
 }

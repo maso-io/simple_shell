@@ -27,6 +27,8 @@ int get_cmd_stat(char **cmd, char **envp)
 /**
  * check_fgets - checks for piped input
  * @cmd: memory to place holder for cmd
+ *
+ * Return: 0 on sucess, otherwise -1
  */
 int check_fgets(char **cmd)
 {
