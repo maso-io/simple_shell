@@ -1,42 +1,20 @@
 #include "main.h"
 #include "shell.h"
 /**
- * _getline - gets input from the user
- * @buffer: buffer for user input
- *
- * Return: Number of characters printed or EOF on error
- */
-int _getline(char **buffer);
-/**
- * _strdup - creates a duplicate memory space and copies string into it
- * @buffer: pointer to allocate memory to
- * @s: string to copy into the memory space
- * @len: lenght of the string
- */
-void _strdup(char **buffer, const char *s, int len);
-/**
- * callexe - executes a program
- * @args: array of string arguments
- * @env: environment variable
- */
-void callexe(char **args, char **env, char **buffer);
-/**
  * main - creates a simple shell
  * @ac: argument count
- * @argv:
+ * @argv: argument vector
+ * @env: enviroment variable
  *
  * Return: always 0.
  */
 int main(int ac, char *argv[], char *env[])
 {
 	int flag, flag_, i;
-	char **args;
-	char *buffer;
+	char **args, *buffer;
 
 	(void)ac;
 	(void)argv;
-
-	/*args = (char **)malloc(sizeof(char *) * 2);*/
 	buffer = (char *)malloc(1);
 	if (!buffer)
 		return (-1);
@@ -44,9 +22,6 @@ int main(int ac, char *argv[], char *env[])
 	printf("$ ");
 	while (_getline(&buffer) != EOF)
 	{
-
-		/* arr = split(&lineptr); */
-		/*args[0] = buffer;*/
 		args = arr_tokens(buffer, " ");
 		flag_ = get_cmd_stat(args, env);
 		if (flag_ == 2)
@@ -54,9 +29,7 @@ int main(int ac, char *argv[], char *env[])
 		else
 			flag = 1;
 		if (flag == 0 && flag_ == 2)
-		{
 			callexe(args, env, &buffer);
-		}
 		if (flag_ == 0)
 		{
 			args[0] = buffer;
@@ -75,16 +48,15 @@ int main(int ac, char *argv[], char *env[])
 	}
 	free(args);
 	free(buffer);
-	args = NULL;
-	buffer = NULL;
-	/* 2. chop it up to pieces  so to have the different args */
-
-	/* 3. create a child process to execute of it */
-
-	/* execute */
 
 	return (0);
 }
+/**
+ * _getline - gets input from the user
+ * @buffer: buffer for user input
+ *
+ * Return: Number of characters printed or EOF on error
+ */
 int _getline(char **buffer)
 {
 	int len;
@@ -103,7 +75,12 @@ int _getline(char **buffer)
 	free(lineptr);
 	return (len - 1);
 }
-
+/**
+ * _strdup - creates a duplicate memory space and copies string into it
+ * @buffer: pointer to allocate memory to
+ * @s: string to copy into the memory space
+ * @len: lenght of the string
+ */
 void _strdup(char **buffer, const char *s, int len)
 {
 	int i;
@@ -123,6 +100,12 @@ void _strdup(char **buffer, const char *s, int len)
 	/* Add the null terminator at the end */
 	(*buffer)[i] = '\0';
 }
+/**
+ * callexe - executes a program
+ * @args: array of string arguments
+ * @env: environment variable
+ * @buffer: pointer to memory with user cmd
+ */
 void callexe(char **args, char **env, char **buffer)
 {
 	int status;
@@ -156,6 +139,13 @@ void callexe(char **args, char **env, char **buffer)
 		}
 	}
 }
+/**
+ * call_cmd - executes a command with command line arguments
+ * @args: array vector with with command full path
+ * @env: enviroment variable
+ * @buffer: pointer to user command
+ * @cmd: array vector with full command arguments
+ */
 void call_cmd(char **args, char **env, char **buffer, char **cmd)
 {
 	int status;
