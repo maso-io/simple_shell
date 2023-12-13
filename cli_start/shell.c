@@ -15,16 +15,15 @@ int main(int ac, char *av[], char *envp[])
 	char *input;
 
 	(void) ac;
-	(void)av;
 	input = NULL;
-	n = 0;
-	printf("$ ");
+	if (fflush(NULL) != 0)
+		perror("fflush(stdin)");
+	printf("#cisfun$ ");
 	while ((num_read = getline(&input, &n, stdin) != EOF))
 	{
-		input = strndup(input, strlen(input) - 1);
-		if (cmd_found(input))
+		if (cmd_found(&input, av))
 			exec_cmd(input, envp);
-		printf("$ ");
+		printf("#cisfun$ ");
 	}
 	putchar(10);
 	free(input);
