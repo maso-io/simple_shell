@@ -57,4 +57,6 @@ int _getline(char **buffer);
 void _strdup(char **buffer, const char *s, int len);
 /* executes a full path command */
 void callexe(char **args, char **env, char **buffer);
+/* check for piped command */
+int check_fgets(char **cmd);
 #endif

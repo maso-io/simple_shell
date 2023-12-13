@@ -1,7 +1,6 @@
+#include "shell.h"
 #include "main.h"
 
-char **arr_tokens(char *s, char *d);
-size_t token_size(char *s, char *d);
 /**
  * check_file - check for the existence of FILE in DELIMETER separated PATH
  * @file: file name
@@ -61,7 +60,6 @@ int check_file(char *file, char *path, char *d)
 
 	return (0);
 }
-
 /**
  * arr_tokens - takes a string and convert it to an array of words
  * @s: string with words to turn to tokens

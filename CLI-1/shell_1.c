@@ -14,16 +14,13 @@ int main(int ac, char *argv[], char *env[])
 	char **args, *buffer;
 
 	(void)ac;
-	(void)argv;
 	args = (char **)malloc(sizeof(char *) * 2);
 	buffer = (char *)malloc(1);
 	if (!buffer || !args)
 		return (-1);
 	/* 1. get the line */
-	printf("#cisfun$ ");
-	while (_getline(&buffer) != EOF)
+	if (check_fgets(&buffer) == 0)
 	{
-		/*args = arr_tokens(buffer, " ");*/
 		args[0] = buffer;
 		flag_ = get_cmd_stat(args, env);
 		if (flag_ == 2)
@@ -38,20 +35,37 @@ int main(int ac, char *argv[], char *env[])
 			callexe(args, env, &buffer);
 		}
 		if (flag == 3)
-			printf("No such file or directory\n");
+			printf("%s: No such file or directory\n", argv[0]);
+	}
+	else
+	{
 		printf("#cisfun$ ");
+		while (_getline(&buffer) != EOF)
+		{
+			args = arr_tokens(buffer, " ");
+			/*args[0] = buffer;*/
+			flag_ = get_cmd_stat(args, env);
+			if (flag_ == 2)
+				flag = get_file_stat(&args[0]);
+			else
+				flag = 1;
+			if (flag == 0 && flag_ == 2)
+				callexe(args, env, &buffer);
+			if (flag_ == 0)
+			{
+				args[0] = buffer;
+				callexe(args, env, &buffer);
+			}
+			if (flag == 3)
+				printf("%s: No such file or directory\n", argv[0]);
+			printf("#cisfun$ ");
+		}
+		free_arr_token(args);
 	}
 	putchar(10);
-	i = (int) token_size(buffer, " ");
-	for (; i >= 0; i--)
-	{
-		free(args[i]);
-	}
-	free(args);
-	free(buffer);
-
 	return (0);
 }
+
 /**
  * _getline - gets input from the user
  * @buffer: buffer for user input
@@ -75,31 +89,6 @@ int _getline(char **buffer)
 
 	free(lineptr);
 	return (len - 1);
-}
-/**
- * _strdup - creates a duplicate memory space and copies string into it
- * @buffer: pointer to allocate memory to
- * @s: string to copy into the memory space
- * @len: lenght of the string
- */
-void _strdup(char **buffer, const char *s, int len)
-{
-	int i;
-
-	/* Allocate space for the string and the null terminator */
-	*buffer = (char *)realloc(*buffer, sizeof(char) * len);
-	if (*buffer == NULL)
-	{
-		printf("Error: memory allocation failed\n");
-		exit(1);
-	}
-	for (i = 0; i < len - 1; i++)
-	{
-		/* Assign each character of s to the buffer */
-		(*buffer)[i] = s[i];
-	}
-	/* Add the null terminator at the end */
-	(*buffer)[i] = '\0';
 }
 /**
  * callexe - executes a program

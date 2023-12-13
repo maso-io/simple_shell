@@ -1,3 +1,4 @@
+#include "shell.h"
 #include "main.h"
 /**
  * get_cmd_stat - checks if the command exists in current dir
@@ -20,6 +21,23 @@ int get_cmd_stat(char **cmd, char **envp)
 	{
 		return (2);
 	}
+
+	return (0);
+}
+/**
+ * check_fgets - checks for piped input
+ * @cmd: memory to place holder for cmd
+ */
+int check_fgets(char **cmd)
+{
+	char input[MAX_SIZE];
+
+	fgets(input, MAX_SIZE, stdin);
+	if (input == NULL)
+	{
+		return (-1);
+	}
+	_strdup(cmd, input, strlen(input));
 
 	return (0);
 }

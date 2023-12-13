@@ -135,17 +135,4 @@ int get_file_stat(char **k)
 
 	return (3);
 }
-/**
- * free_token - free memory allocated to a struct array_t
- * @t: pointer to memory allocated to a array_t
- */
-void free_token(array_t *t)
-{
-	int i;
-
-	i = t->size;
-	for (; i >= 0; i--)
-		free(t->arr[i]);
-	free(t->arr);
-	free(t);
-}
+f1 2015 melbourne highlights
