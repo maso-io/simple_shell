@@ -14,6 +14,8 @@ int main(int ac, char *av[], char *envp[])
 	ssize_t num_read;
 	char *input;
 
+	(void) ac;
+	(void)av;
 	input = NULL;
 	n = 0;
 	printf("$ ");

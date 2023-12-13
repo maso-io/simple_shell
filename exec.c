@@ -8,8 +8,10 @@ void exec_cmd(char *cmd, char **env)
 {
 	pid_t cpid, w;
 	int wstatus;
-	char *args[2] = {cmd, NULL};
+	char *args[2];
 
+	args[0] = cmd;
+	args[1] = NULL;
 	cpid = fork();
 	if (cpid == -1)
 	{
