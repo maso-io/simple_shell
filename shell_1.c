@@ -15,14 +15,16 @@ int main(int ac, char *argv[], char *env[])
 
 	(void)ac;
 	(void)argv;
+	args = (char **)malloc(sizeof(char *) * 2);
 	buffer = (char *)malloc(1);
-	if (!buffer)
+	if (!buffer || !args)
 		return (-1);
 	/* 1. get the line */
 	printf("#cisfun$ ");
 	while (_getline(&buffer) != EOF)
 	{
-		args = arr_tokens(buffer, " ");
+		/*args = arr_tokens(buffer, " ");*/
+		args[0] = buffer;
 		flag_ = get_cmd_stat(args, env);
 		if (flag_ == 2)
 			flag = get_file_stat(&args[0]);
