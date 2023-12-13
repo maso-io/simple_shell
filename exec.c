@@ -2,9 +2,9 @@
 /**
  * exec_cmd - executes the given command
  * @cmd: command to execute
- * @envp: environment variable
+ * @env: environment variable
  */
-void exec_cmd(char *cmd, char**env)
+void exec_cmd(char *cmd, char **env)
 {
 	pid_t cpid, w;
 	int wstatus;
@@ -25,9 +25,8 @@ void exec_cmd(char *cmd, char**env)
 	}
 	else
 	{                    /* Code executed by parent */
-		do
-		{
-			w = waitpid(cpid, &wstatus,0);
+		do {
+			w = waitpid(cpid, &wstatus, 0);
 			if (w == -1)
 			{
 				perror("waitpid");
@@ -42,14 +41,6 @@ void exec_cmd(char *cmd, char**env)
 			else if (WIFSIGNALED(wstatus))
 			{
 				printf("killed by signal %d\n", WTERMSIG(wstatus));
-			}
-			else if (WIFSTOPPED(wstatus))
-			{
-				printf("stopped by signal %d\n", WSTOPSIG(wstatus));
-			}
-			else if (WIFCONTINUED(wstatus))
-			{
-				printf("continued\n");
 			}
 		} while (!WIFEXITED(wstatus) && !WIFSIGNALED(wstatus));
 		/*exit(EXIT_SUCCESS);*/

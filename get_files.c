@@ -11,8 +11,7 @@ int cmd_found(char *cmd)
 
 	if (stat(cmd, &file_info) == 0)
 		return (1);
-	else
-		perror("error");
+	perror("error");
 
 	return (0);
 }
