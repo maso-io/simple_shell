@@ -19,7 +19,7 @@ int main(int ac, char *argv[], char *env[])
 	if (!buffer)
 		return (-1);
 	/* 1. get the line */
-	printf("$ ");
+	printf("#cisfun$ ");
 	while (_getline(&buffer) != EOF)
 	{
 		args = arr_tokens(buffer, " ");
@@ -37,8 +37,7 @@ int main(int ac, char *argv[], char *env[])
 		}
 		if (flag == 3)
 			printf("No such file or directory\n");
-
-		printf("$ ");
+		printf("#cisfun$ ");
 	}
 	putchar(10);
 	i = (int) token_size(buffer, " ");
