@@ -22,10 +22,14 @@ int cmd_found(char *cmd, char **av);
 void exec_cmd(char *, char **);
 /* check for file access permission */
 int check_access(char *path);
+/* gets a single command from user input */
+char *single_token(char **s);
 
 		/* UTILITIES */
 /* duplicates the string s to memory */
 char *_strdup(char *s);
 /* calculates the length of string s */
 int _strlen(char *s);
+/* gets the number to delimeter separated arguments */
+size_t token_size(char *s, char *d);
 #endif /* shell.h */

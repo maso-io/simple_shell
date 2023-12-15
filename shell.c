@@ -22,6 +22,7 @@ int main(int ac, char *av[], char *envp[])
 		if (init)
 		{
 			cmd = _strdup(input);
+			cmd = single_token(&cmd);
 			if (cmd_found(cmd, av) && (check_access(cmd) == 0))
 				exec_cmd(cmd, envp);
 			free(cmd);
