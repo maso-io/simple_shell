@@ -34,6 +34,8 @@ int check_file(char *file, char *path, char *d);
 /* arr_tokes - takes a string and convert it to an array of words */
 char **arr_tokens(char *s, char *d);
 /* token_size -  returns the number of tokens the string will produce */
+/* free memory allocated to a arr of words*/
+void free_arr_token(char **arr_t, char *d);
 size_t token_size(char *s, char *d);
 /* get_file_stat - check if the file is in the path environments */
 int get_file_stat(char **f);

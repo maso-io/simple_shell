@@ -48,10 +48,10 @@ void free_arr_token(char **arr_t, char *d)
 {
 	int i;
 
-	i = (int) token_size(arr_t, d);
+	i = (int) token_size(*arr_t, d);
 	for (; i >= 0; i--)
 	{
-		free(aar_t[i]);
+		free(arr_t[i]);
 	}
 	free(arr_t);
-
+}

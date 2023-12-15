@@ -10,37 +10,18 @@
  */
 int main(int ac, char *argv[], char *env[])
 {
-	int flag, flag_, i;
+	int flag, flag_, init;
 	char **args, *buffer;
 
+	init = 0;
 	(void)ac;
 	args = (char **)malloc(sizeof(char *) * 2);
 	buffer = (char *)malloc(1);
 	if (!buffer || !args)
 		return (-1);
 	/* 1. get the line */
-	if (check_fgets(&buffer) == 0)
-	{
-		args[0] = buffer;
-		flag_ = get_cmd_stat(args, env);
-		if (flag_ == 2)
-			flag = get_file_stat(&args[0]);
-		else
-			flag = 1;
-		if (flag == 0 && flag_ == 2)
-			callexe(args, env, &buffer);
-		if (flag_ == 0)
-		{
-			args[0] = buffer;
-			callexe(args, env, &buffer);
-		}
-		if (flag == 3)
-			printf("%s: No such file or directory\n", argv[0]);
-	}
-	else
-	{
-		printf("#cisfun$ ");
-		while (_getline(&buffer) != EOF)
+	do {
+		if (init)
 		{
 			args = arr_tokens(buffer, " ");
 			/*args[0] = buffer;*/
@@ -58,11 +39,14 @@ int main(int ac, char *argv[], char *env[])
 			}
 			if (flag == 3)
 				printf("%s: No such file or directory\n", argv[0]);
-			printf("#cisfun$ ");
+			free_arr_token(args, "\t ");
 		}
-		free_arr_token(args);
-	}
-	putchar(10);
+		init = 1;
+		if (isatty(STDIN_FILENO))
+			printf("$ ");
+	} while (_getline(&buffer) != EOF);
+	if (isatty(STDIN_FILENO))
+		putchar(10);
 	return (0);
 }
 

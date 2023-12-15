@@ -135,4 +135,3 @@ int get_file_stat(char **k)
 
 	return (3);
 }
-f1 2015 melbourne highlights

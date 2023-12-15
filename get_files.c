@@ -26,6 +26,7 @@ int check_access(char *path)
 {
 	if (access(path, F_OK | X_OK) != 0)
 		return (-1);
+	perror("access");
 
 	return (0);
 }
