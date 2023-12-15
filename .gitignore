@@ -1,0 +1,8 @@
+TEST_SUITES
+allowed_functions
+runchecker.bash
+prototype
+CLI-1
+cli_start
+SIMPLE_SHELL_TEST_SUITE  
+TEST_SUITE

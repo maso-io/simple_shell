@@ -17,7 +17,15 @@
 typedef unsigned long int ul_int;
 
 /* check for command */
-int cmd_found(char **cmd, char **av);
+int cmd_found(char *cmd, char **av);
 /* executes cmd given */
 void exec_cmd(char *, char **);
+/* check for file access permission */
+int check_access(char *path);
+
+		/* UTILITIES */
+/* duplicates the string s to memory */
+char *_strdup(char *s);
+/* calculates the length of string s */
+int _strlen(char *s);
 #endif /* shell.h */
