@@ -29,3 +29,4 @@ int check_access(char *path)
 
 	return (0);
 }
+

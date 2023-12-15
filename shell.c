@@ -27,10 +27,13 @@ int main(int ac, char *av[], char *envp[])
 			free(cmd);
 		}
 		init = 1;
-		printf("$ ");
+		if (isatty(STDIN_FILENO))
+			printf("$ ");
 	} while ((num_read = getline(&input, &n, stdin) != EOF));
-	putchar(10);
+	if (isatty(STDIN_FILENO))
+		putchar(10);
 	free(input);
 
 	return (0);
 }
+
