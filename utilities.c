@@ -11,7 +11,7 @@ char *_strdup(char *s)
 	char *mem;
 	int i = 0;
 
-	len = _strlen(s);
+	len = _strlen(s) + 1;
 	mem = (char *)malloc(sizeof(char) * len);
 	if (mem == NULL)
 		return (NULL);
@@ -20,8 +20,8 @@ char *_strdup(char *s)
 		mem[i] = s[i];
 		i++;
 	}
-	if (mem[i - 1] != '\0' && s[i] == '\0')
-		mem[i - 1] = '\0';
+	/*if (mem[i - 1] != '\0' && s[i] == '\0')*/
+	mem[i] = '\0';
 
 	return (mem);
 }
@@ -37,11 +37,39 @@ int _strlen(char *s)
 
 	if (s == NULL)
 		return (-1);
-	while (*s != '\0')
-	{
+	while (s[i] != '\0')
 		i++;
-		s++;
-	}
 
 	return (i);
+}
+/**
+ * free_multi_token - free memory allocated to an array of words
+ * @arr_t: pointer to memory with array of words
+ * @d: delimeter
+ */
+void free_multi_token(char **arr_t, char *d)
+{
+	int i;
+
+	i = (int) token_size(*arr_t, d);
+	for (; i >= 0; i--)
+	{
+		free(arr_t[i]);
+	}
+	free(arr_t);
+}
+/**
+ * free_multi_path - free memory allocated to an array of paths
+ * @arr_p: pointer to memory with array of paths
+ */
+void free_multi_path(char **arr_p)
+{
+	int i;
+
+	i = 0;
+	for (; arr_p[i] != NULL; i++)
+	{
+		free(arr_p[i]);
+	}
+	free(arr_p);
 }

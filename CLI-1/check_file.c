@@ -106,6 +106,7 @@ char **arr_tokens(char *s, char *d)
 
 	return (buffer);
 }
+
 /**
  * token_size -  returns the number of tokens the string will produce
  * @s: string to tokenize

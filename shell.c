@@ -8,24 +8,39 @@
  *
  * Return: always 0.
  */
-int main(int ac, char *av[], char *envp[])
+int main(int __attribute__((unused)) ac, char *av[], char *envp[])
 {
-	int init;
-	size_t n;
-	ssize_t num_read;
-	char *input, *cmd;
+	int init, i;
+	size_t n, size, num_read;
+	char *input, *cmd, **cmd_args, **paths;
 
-	(void) ac;
-	init = 0;
-	input = NULL;
+	init = 0, input = NULL;
 	do {
 		if (init)
 		{
-			cmd = _strdup(input);
-			cmd = single_token(&cmd);
-			if (cmd_found(cmd, av) && (check_access(cmd) == 0))
-				exec_cmd(cmd, envp);
-			free(cmd);
+			size = token_size(input, " \t\n");
+			if (size == 1)
+			{
+				(void) cmd_args;
+				cmd = single_token(&input);
+				cmd = _strdup(cmd);
+				paths = get_path(cmd);
+				i = cmd_found_path(paths);
+				call_w_cmd(&cmd, paths, envp, av, i);
+			}
+			else
+			{
+				(void) cmd;
+				cmd_args = multi_tokens(input, " \t\n");
+				paths = get_path(cmd_args[0]);
+				i = cmd_found_path(paths);
+				call_w_args(cmd_args, paths, envp, av, i);
+			}
+			if (size == 1)
+				free(cmd);
+			else
+				free_multi_token(cmd_args, " \t\n");
+			free_multi_path(paths);
 		}
 		init = 1;
 		if (isatty(STDIN_FILENO))
@@ -34,7 +49,5 @@ int main(int ac, char *av[], char *envp[])
 	if (isatty(STDIN_FILENO))
 		putchar(10);
 	free(input);
-
 	return (0);
 }
-

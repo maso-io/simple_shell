@@ -10,9 +10,9 @@ int cmd_found(char *cmd, char **av)
 {
 	struct stat file_info;
 
+	(void)av;
 	if (stat(cmd, &file_info) == 0)
 		return (1);
-	perror(av[0]);
 
 	return (0);
 }
@@ -26,7 +26,6 @@ int check_access(char *path)
 {
 	if (access(path, F_OK | X_OK) != 0)
 	{
-		perror("access");
 		return (-1);
 	}
 
@@ -44,9 +43,49 @@ char *single_token(char **s)
 	char d[] = " \t\n";
 
 	str = strtok(*s, d);
+	str = _strdup(str);
+	free(*s);
+	*s = str;
 	if (str != NULL)
-		return (str);
+		return (*s);
 	return (NULL);
+}
+/**
+ * multi_tokens - takes a string and convert it to an array of words
+ * @s: string with words to turn to tokens
+ * @d: delimeter to use on the string
+ *
+ * Return: pointer to an array of NULL terminated tokens or NULL
+ */
+char **multi_tokens(char *s, char *d)
+{
+	int i, word_c;
+	char **buffer, *word, *sentence;
+
+	i = 0;
+	word_c = token_size(s, d) + 1;
+	sentence = strdup(s);
+	buffer = (char **)malloc(sizeof(char *) * word_c);
+	word = strtok(sentence, d);
+	if (!buffer | !word)
+		return (NULL);
+	while (i < word_c)
+	{
+		if (i == 0)
+		{
+			buffer[0] = _strdup(word);
+			i++;
+		}
+		word = strtok(NULL, d);
+		if (word == NULL)
+			break;
+		buffer[i] = _strdup(word);
+		i++;
+	}
+	buffer[i] = NULL;
+	free(sentence);
+
+	return (buffer);
 }
 /**
  * token_size -  returns the number of tokens the string will produce
