@@ -30,7 +30,7 @@ void exec_cmd_args(char **cmd, char **env);
 /* check for file access permission */
 int check_access(char *path);
 /* gets a single command from user input */
-char *single_token(char **s);
+char *single_token(char *s);
 /* generate an array of arguments */
 char **multi_tokens(char *, char *);
 /* get an array of path environment variable with program appended */

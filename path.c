@@ -51,13 +51,19 @@ char *append_prog(char **path, char *s)
 	len = strlen(p) + strlen(s) + 1;
 	if (strlen(s) == 0)
 		return (p);
-	if (p[p_len - 1] != '/')
+	if (p[p_len - 1] != '/' && s[0] != '/')
 	{
 		p = (char *)realloc(p, sizeof(char) * (len + 1));
 		strcat(p, c);
 		strcat(p, s);
 	}
-	else
+	else if (p[p_len - 1] == '/' && s[0] == '/')
+	{
+		p = (char *)realloc(p, sizeof(char) * (len - 1));
+		strcat(p, s + 1);
+	}
+	else if ((p[p_len - 1] != '/' && s[0] == '/') || (p[p_len - 1] == '/' &&
+				s[0] != '/'))
 	{
 		p = (char *)realloc(p, sizeof(char) * len);
 		strcat(p, s);

@@ -9,21 +9,23 @@
  */
 void call_w_cmd(char **k, char **paths, char **envp, char **av, int i)
 {
+	int f_exec; /* execution flag */
 	char *cmd;
 
 	cmd = *k;
+	f_exec = 0;
 	if ((check_access(cmd) == 0) && cmd_found(cmd, av) && i == -1)
 	{
+		f_exec = 1;
 		exec_cmd(cmd, envp);
 	}
 	if (i && check_access(paths[i]) == 0)
 	{
-		free(cmd);
-		cmd = _strdup(paths[i]);
-		exec_cmd(cmd, envp);
+		exec_cmd(paths[i], envp);
+		f_exec = 1;
 	}
 	else
-		if (isatty(STDIN_FILENO))
+		if (isatty(STDIN_FILENO) && !f_exec)
 			perror(av[0]);
 }
 /**

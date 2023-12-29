@@ -37,17 +37,17 @@ int check_access(char *path)
  *
  * Return: pointer to memory with the token/cmd
  */
-char *single_token(char **s)
+char *single_token(char *s)
 {
-	char *str;
+	char *str, *tmp;
 	char d[] = " \t\n";
 
-	str = strtok(*s, d);
+	tmp = _strdup(s);
+	str = strtok(tmp, d);
 	str = _strdup(str);
-	free(*s);
-	*s = str;
+	free(tmp);
 	if (str != NULL)
-		return (*s);
+		return (str);
 	return (NULL);
 }
 /**
