@@ -15,7 +15,7 @@ int main(int __attribute__((unused)) ac, char *av[], char *envp[])
 
 	input = NULL;
 	do {
-		if (init++)
+		if (init++ && validate_input(input))
 		{
 			size = token_size(input, " \t\n");
 			if (size == 1)
@@ -48,5 +48,30 @@ int main(int __attribute__((unused)) ac, char *av[], char *envp[])
 	if (isatty(STDIN_FILENO))
 		putchar(10);
 	free(input);
+	return (0);
+}
+/**
+ * validate_input - check if user input is valid input
+ * @input: input passed by user
+ *
+ * Return: 1 if input it valid, else 0.
+ */
+int validate_input(char *input)
+{
+	int c_char, i;
+	char c;
+
+	i = 0;
+	c_char = 0;
+	while (input[i] != '\0')
+	{
+		c = input[i];
+		if (c != '\t' && c != '\n' && c != 32)
+			c_char++;
+		if (c_char)
+			return (1);
+		i++;
+	}
+
 	return (0);
 }

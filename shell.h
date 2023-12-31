@@ -9,7 +9,7 @@
 #include <sys/types.h>/* import pid_t, size_t, ssize_t those types  */
 #include <string.h> /* import string utilities */
 #include <sys/stat.h> /* import struct stat utilities */
-
+#include <errno.h> /* import error codes */
 #define MAX_SIZE 100
 /* imports the environment variable */
 extern char **environ;
@@ -58,4 +58,6 @@ void free_multi_path(char **arr_p);
 void call_w_cmd(char **k, char **paths, char **envp, char **av, int i);
 /* main call on multiple args */
 void call_w_args(char **cmd_args, char **paths, char **envp, char **av, int i);
+/* validate if the user gave input */
+int validate_input(char *input);
 #endif /* shell.h */

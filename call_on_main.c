@@ -26,7 +26,7 @@ void call_w_cmd(char **k, char **paths, char **envp, char **av, int i)
 	}
 	else
 		if (isatty(STDIN_FILENO) && !f_exec)
-			perror(av[0]);
+			dprintf(STDERR_FILENO, "%s: %d %s: not found\n", av[0], errno, cmd);
 }
 /**
  * call_w_args - calls for execution using command with multiple options
@@ -49,5 +49,6 @@ void call_w_args(char **cmd_args, char **paths, char **envp, char **av, int i)
 	}
 	else
 		if (isatty(STDIN_FILENO))
-			perror(av[0]);
+			dprintf(STDERR_FILENO, "%s: %d %s: not found\n", av[0], errno,
+					cmd_args[0]);
 }
