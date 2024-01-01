@@ -1,3 +1,5 @@
+bin_ls_space.bash
+ls_in_current_dir.bash
 TEST_SUITES
 allowed_functions
 runchecker.bash
